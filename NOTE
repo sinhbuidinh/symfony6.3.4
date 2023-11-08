@@ -1,0 +1,26 @@
+### Error
+With serdao-test-files/UserController.php without DI for Symfony\Component\HttpFoundation\Request; $request. It will throwing error.
+Can see more detail in /sinh-local/error_user_begin.PNG
+
+### Explain
+1/ For keep current code base and no need write migrate change current table, it make easier for compare. So i created new controller called `MemberController` instead of use `UserController`.
+2/ I saw some problem of code are:
+- One function in controller for handle all CREATE, LIST, DELETE.
+- Object user save firstname, lastname, address in same column. I think it will be better if we save it in separate colum, it helping search or change specific column in future.
+- The connection to database in controller directly make it not clean, should be have another layer to connect to db.
+- The view is using hard link, if we change url in controller we need to make change it in view also.
+
+# Test the application
+- Open http://localhost:8000/member for checking member list.
+- Check member create.
++ Input `First name`, `Last name:`, `Address:` 
++ Click `Add member` button for create new member.
++ Check data in bottom for know data already created.
+- Try to click `Delete` in table member list for check delete function.
+
+### Need improvement more.
+- Add one more layer called `Service` for getting member, create, delete. `Controller` only where specify route, directional.
+- Display message after create, delete member by ajax instead of form submit for display popup, easier to notify user.
+- Disable button create, delete when in-progress for prevent multiple call.
+- I think should be have another column to identify user is unique or not, or we can validate first name & last name unique for prevent duplicated data when created.
+- Test case for handle action create, delete, list member.
